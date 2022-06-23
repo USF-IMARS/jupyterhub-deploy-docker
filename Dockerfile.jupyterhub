@@ -3,6 +3,9 @@
 ARG JUPYTERHUB_VERSION
 FROM jupyterhub/jupyterhub-onbuild:$JUPYTERHUB_VERSION
 
+# [fix for "No module named conda error](https://github.com/jupyterhub/jupyterhub-deploy-docker/issues/107#issuecomment-953875458)
+RUN echo "python 3.6.*" > /opt/conda/conda-meta/pinned
+
 # Install dockerspawner, oauth, postgres
 RUN /opt/conda/bin/conda install -yq psycopg2=2.7 && \
     /opt/conda/bin/conda clean -tipsy && \
