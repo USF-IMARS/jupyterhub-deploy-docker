@@ -17,8 +17,8 @@ Build based on [jupyterhub/jupyterhub-deploy-docker](https://github.com/jupyterh
 1. put jupyterhub.crt & jupyterhub.key in `/secrets/` dir:
     ```bash
     (base) root@manglilloo:~/jupyterhub-deploy-docker# mkdir -p secrets
-    (base) root@manglilloo:~/jupyterhub-deploy-docker# ln -s /root/certs_imars_usf_edu/imars_usf_edu.key secrets/jupyterhub.key
-    (base) root@manglilloo:~/jupyterhub-deploy-docker# ln -s /root/certs_imars_usf_edu/imars_usf_edu_cert.cer secrets/jupyterhub.crt
+    (base) root@manglilloo:~/jupyterhub-deploy-docker# cp ~/certs_imars_usf_edu/imars_usf_edu_cert.cer secrets/jupyterhub.crt
+    (base) root@manglilloo:~/jupyterhub-deploy-docker# cp ~/certs_imars_usf_edu/imars_usf_edu.key secrets/jupyterhub.key
     ```
 
 ## ☑️ GH OAuth setup
@@ -33,97 +33,38 @@ create & register a GitHub OAuth app
   OAUTH_CALLBACK_URL=https://<myhost.mydomain>/hub/oauth_callback
   ```
 
-# === TODO =================
+## ☑️ Build the JupyterHub Docker image
 
-## Build the JupyterHub Docker image
-
-Finish configuring JupyterHub and then build the hub's Docker image. (We'll
-build the Jupyter Notebook image in the next section.)
-
-1. Configure `userlist`: Create a `userlist` file of authorized JupyterHub
-   users. The list should contain GitHub usernames, and this file should
-   designate at least one `admin` user. For instance, the example file below
-   contains three users, `jtyberg`, `jenny`, and `guido`, and one designated
-   administrator, `jtyberg`:
-
-   `userlist` file
+1. Created a `userlist` file of GitHub usernames w/ >0 `admin` users.
    ```
-   jtyberg admin
-   jenny
-   guido
+   7yl4r admin
+   dotis
    ```
 
-   The admin user will have the ability to add more users through JupyterHub's
-   admin console.
-
-1. Use [docker-compose](https://docs.docker.com/compose/reference/) to build
-   the JupyterHub Docker image on the active Docker machine host by running
-   the `make build` command:
-
+1. build JupyterHub Docker image:
    ```bash
    make build
    ```
 
-
-## Spawner: Prepare the Jupyter Notebook Image
-
-You can configure JupyterHub to spawn Notebook servers from any Docker image, as
-long as the image's `ENTRYPOINT` and/or `CMD` starts a single-user instance of
-Jupyter Notebook server that is compatible with JupyterHub.
-
-To specify which Notebook image to spawn for users, you set the value of the  
-`DOCKER_NOTEBOOK_IMAGE` environment variable to the desired container image.
-You can set this variable in the `.env` file, or alternatively, you can
-override the value in this file by setting `DOCKER_NOTEBOOK_IMAGE` in the
-environment where you launch JupyterHub.
-
-Whether you build a custom Notebook image or pull an image from a public or
-private Docker registry, the image must reside on the host.  
-
-If the Notebook image does not exist on host, Docker will attempt to pull the
-image the first time a user attempts to start his or her server.  In such cases,
-JupyterHub may timeout if the image being pulled is large, so it is better to
-pull the image to the host before running JupyterHub.  
-
-This deployment defaults to the
-[jupyter/scipy-notebook](https://hub.docker.com/r/jupyter/scipy-notebook/)
-Notebook image, which is built from the `scipy-notebook`
-[Docker stacks](https://github.com/jupyter/docker-stacks). (Note that the Docker
-stacks `*-notebook` images tagged `2d878db5cbff` include the
-`start-singleuser.sh` script required to start a single-user instance of the
-Notebook server that is compatible with JupyterHub).
-
-You can pull the image using the following command:
+## ☑️ Prep the default Jupyter Notebook Image
 
 ```bash
 make notebook_image
 ```
 
-
-## Run JupyterHub
-
-Run the JupyterHub container on the host.
-
-To run the JupyterHub container in detached mode:
-
+## ☑️ Run JupyterHub
 ```bash
 docker-compose up -d
 ```
 
-Once the container is running, you should be able to access the JupyterHub console at
+☑️ able to access the JupyterHub console at
 
-**file**
-```
-https://myhost.mydomain
-```
+https://imars.usf.edu/hub
 
-To bring down the JupyterHub container:
 
-```bash
-docker-compose down
-```
 
 ---
+
 
 ## Behind the scenes
 
