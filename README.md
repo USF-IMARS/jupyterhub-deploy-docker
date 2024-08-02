@@ -1,3 +1,10 @@
+# ⚠️ DEPRECATED ⚠️
+
+This repo is no longer used.
+Newer jupyterHub setup documented [here](https://github.com/USF-IMARS/imars-jupyterhub).
+
+--------------------------
+
 **[Prerequisites](#prerequisites)** |
 **[Authenticator setup](#authenticator-setup)** |
 **[Build the JupyterHub Docker image](#build-the-jupyterhub-docker-image)** |
